@@ -35,3 +35,6 @@ ALTER TABLE employees AUTO_INCREMENT=1000;
 SELECT * FROM role;
 SELECT * FROM department;
 SELECT * FROM employees;
+
+-- Manager Search
+SELECT * FROM employees WHERE manager_id = 01;
