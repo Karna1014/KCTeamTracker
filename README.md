@@ -7,7 +7,6 @@ A Content Mgmt System that creates a solution for managing a company's internal 
   * Usage 
   * License 
   * Contributing 
-  * Tests 
   * Questions 
   * Images 
    
