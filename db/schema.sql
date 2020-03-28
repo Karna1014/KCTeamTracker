@@ -27,7 +27,7 @@ CREATE TABLE employees (
     first_name VARCHAR(30),
     last_name VARCHAR(30),
     role_id INT,
-    manager_id INT Null,
+    manager_id INT,
     FOREIGN KEY(role_id) REFERENCES role(id) ON DELETE CASCADE,
     PRIMARY KEY(id)
     );
@@ -41,3 +41,8 @@ SELECT * FROM employees;
 
 -- Manager Search
 SELECT * FROM employees WHERE manager_id = 01;
+-- Dept View
+SELECT * FROM employees JOIN (department, role) ON (role.department_id=department.id AND employees.role_id=role.id) WHERE department.id = 7;
+
+-- Dept Delete
+DELETE FROM department WHERE id = 52;

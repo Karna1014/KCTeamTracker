@@ -373,17 +373,18 @@ function viewDept() {
   inquirer
     .prompt(
       {
-        name: "name",
+        name: "deptID",
         type: "input",
-        message: "Enter Department you would like to view?"
+        message: "Enter Department ID you would like to view?"
       })
     .then(function (answer) {
-      var query = `SELECT * FROM department WHERE ?`;
-      connection.query(query, { name: answer.name }, function (err, res) {
+      var query = `SELECT * FROM employees JOIN (department, role) ON (role.department_id=department.id AND employees.role_id=role.id) WHERE ?`;
+      connection.query(query, { name: answer.deptID }, function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-          console.log("Department Name:  " + res[i].name + "\n" + "Department ID: " + res[i].id);
-        }
+        
+          console.table(`Department Name: ${answer.department.name} "Department ID: ${answer.department_id} "Employee Name: " ${answer.first_name} 
+          ${answer.last_name} "Employee Role: ${answer.role}`);
+        
         runTeamBldr();
       });
     });
@@ -398,7 +399,7 @@ function viewRole() {
       })
     .then(function (answer) {
       var query = `SELECT * FROM role WHERE ?`;
-      connection.query(query, { title: answer.title }, function (err, res) {
+      connection.query(query, { name: answer.title }, function (err, res) {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
           console.log("Title:  " + res[i].title + "\n" + "Salary: " + res[i].salary
@@ -552,32 +553,7 @@ function exitTeam() {
     connection.end();
   };
 
-  // function delRole() {
-  //   connection.query("Select * from role", function (err, res) {
-  //     var adt = res;
-  //     console.table(res);
-  //     inquirer
-  //       .prompt(
-  //          {
-  //           name: "d-role",
-  //           type: "list",
-  //           message: "Which Role do you wish to Delete?",
-  //           choices: adt.map(role => {
-  //             return { name: role.title }
-  //           })
-  //         }
-  //       )
-  //       .then(function (answer) {
-  //         var query = `DELETE FROM role WHERE ?`;
-  //         connection.query(query, {name: answer.d-role}, function (err, res) {
-  //           if (err) throw err;
-  //             console.log(`Role: ${res.affectedRows} was deleted from your list!\n`);
-            
-  //           runTeamBldr();
-  //         });
-  //       });
-  //   })
-  // };
+  
 
 
 
