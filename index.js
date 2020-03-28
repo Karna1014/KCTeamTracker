@@ -378,13 +378,13 @@ function viewDept() {
         message: "Enter Department ID you would like to view?"
       })
     .then(function (answer) {
+      console.log(answer);
       var query = `SELECT * FROM employees JOIN (department, role) ON (role.department_id=department.id AND employees.role_id=role.id) WHERE ?`;
-      connection.query(query, { name: answer.deptID }, function (err, res) {
+      connection.query(query, { "department.id": answer.deptID }, function (err, res) {
         if (err) throw err;
-        
-          console.table(`Department Name: ${answer.department.name} "Department ID: ${answer.department_id} "Employee Name: " ${answer.first_name} 
-          ${answer.last_name} "Employee Role: ${answer.role}`);
-        
+        console.log(res);
+          console.table(res);
+          
         runTeamBldr();
       });
     });
@@ -393,18 +393,17 @@ function viewRole() {
   inquirer
     .prompt(
       {
-        name: "title",
+        name: "roleID",
         type: "input",
-        message: "What is the Role(Job Title) you wish to view?"
+        message: "What is the RoleID # you wish to view?"
       })
     .then(function (answer) {
-      var query = `SELECT * FROM role WHERE ?`;
-      connection.query(query, { name: answer.title }, function (err, res) {
+      var query = `SELECT * FROM role JOIN employees ON (employees.role_id=role.id) WHERE ?`;
+      connection.query(query, { "role.id": answer.roleID }, function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-          console.log("Title:  " + res[i].title + "\n" + "Salary: " + res[i].salary
-            + "\n" + "Role ID: " + res[i].id + "\n" + "Department ID: " + res[i].department_id);
-        }
+        console.log(res);
+        console.table(res);
+        
         runTeamBldr();
       });
     });
@@ -420,15 +419,9 @@ function viewEmployee() {
       })
     .then(function (answer) {
       var query = `SELECT * from employees WHERE ?`;
-      connection.query(query, {
-        last_name: answer.last_name
-
-      }, function (err, res) {
+      connection.query(query, {last_name: answer.last_name}, function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-          console.table("First Name:  " + res[i].first_name + "\n" + "Last Name: " + res[i].last_name + "\n"
-            + "Role ID: " + res[i].role_id + "\n" + "Manager ID: " + res[i].manager_id);
-        }
+          console.table(res)
         runTeamBldr();
       });
     });
